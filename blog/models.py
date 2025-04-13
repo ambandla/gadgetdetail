@@ -1,5 +1,8 @@
 from attr.validators import max_len
 from django.db import models
+from django.utils import timezone
+from django.conf import settings
+
 
 class Post(models.Model):
     class Status(models.TextChoices):
@@ -16,6 +19,11 @@ class Post(models.Model):
         max_length=2,
         choices=Status,
         default=Status.DRAFT
+    )
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='blog_posts'
     )
     class Meta:
         ordering=['-publish']
